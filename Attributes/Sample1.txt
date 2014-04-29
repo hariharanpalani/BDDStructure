@@ -1,0 +1,27 @@
+TOMCAT:
+  
+  It's a Risk Management Application used primarily by the Middle Officers of Trdae Commodity Finance Business of 
+  Societe Generale Corporate & Investment Bank. The application is used to compute the collateral value which is 
+  used as an essential input to compute Risk Weighted Assets (RWA)which in turn is used to calucalteRegulateory 
+  as well as Economic Capital for the bank.
+  
+  
+BOOK:
+
+  This application is used as a tool to manage and monitor limits and exposure for counterparties and countries
+  associated with Trader's Commodity Finance Business of Societe Generale Corporate & Investment Bank . The 
+  application has an added capability to manage the credit workflow approval process as well. It's an essential 
+  application to handle unsecured trade commodity finance business that generates significant revenue for 
+  the bank. As it has the capability to handle workflow as well as risk monitoring aspects of the business, 
+  it is used by Front Officers as well as Middle Officers.
+  
+  
+TOMTRA:
+  
+  The application handles the Credit Workflow approval process for the Non-Commodity Trade Finance Business 
+  of SocGen. In addition, the application is well equipped for Risk Management purposes. It manages and monitors 
+  Counterparty Limit, Group Limit and Country Limit values along with our exposure to different set of clients.
+  This application is used by all set of users - Front Officrs, Middle Officers and Back Officers.
+  
+  
+  
