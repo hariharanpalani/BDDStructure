@@ -9,3 +9,5 @@ http://techblog.treenodes.com/index.php/2012/12/24/integrate-openauthopenid-with
 http://rehansaeed.co.uk/reactive-extensions-part1-replacing-events/
 
 https://www.udacity.com/course/real-time-analytics-with-apache-storm--ud381
+
+http://hortonworks.com/hadoop-tutorial/hello-world-an-introduction-to-hadoop-hcatalog-hive-and-pig/
