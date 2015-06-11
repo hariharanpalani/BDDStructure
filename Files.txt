@@ -1,0 +1,277 @@
+main.css
+-------------
+body, html {
+    background: #f9f9f9;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+}
+
+.header {
+    background: #aa08ff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.header img {
+    margin: 20px auto;   
+    padding: 20px 0; 
+    text-align: center;
+}
+
+.header ul {
+  list-style: none;
+}
+
+.header li {
+  display: inline;
+  margin-right: 30px;
+}
+
+.main {
+    margin: 40px 0;
+}
+
+.email {
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 18px;
+    margin: 0 0 8px;
+    padding: 20px 0;
+}
+
+.email:hover {
+    background: #fcfcfc;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+.email span {
+    color: #000;
+    display: inline-block;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    text-overflow: ellipsis;
+}
+
+a.back {
+    background: #ffbd1a;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    color: #fff;
+    display: block;
+    font-weight: bold;
+    margin: 0 0 20px;
+    padding: 14px 0;
+    text-align: center;
+    width: 200px;
+}
+
+a.back:hover {
+    background: #f7a500;
+    text-decoration: none;
+}
+
+.from {
+    font-size: 16px;
+    font-weight: 700;
+    padding-left: 2%;
+    width: 20%;
+}
+
+.subject {
+    width: 60%;
+}
+
+.date {
+    font-size: 14px;
+    padding-right: 2%;
+    text-align: right;
+    text-overflow: ellipsis;
+    width: 15%;
+}
+
+.email-view {
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 50px;
+}
+
+.email-view h2 {
+    font-size: 40px;
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+.email-view .from {
+    display: inline-block;
+    padding: 0;
+    width: 50%;
+}
+
+.email-view .date {
+    display: inline-block;
+    padding: 0;
+    text-align: right;
+    width: 50%;
+}
+
+.email-view p {
+    font-size: 24px;
+    margin: 30px 0 0;
+}
+
+.footer {
+  background:#000;
+  padding:60px 0; 
+}
+
+.footer h3 {
+  color:#fff;
+  font-size:18px;
+  font-weight:300;  
+}
+
+.footer ul {
+  color:#0393ff; 
+  list-style:none;
+  padding-left:0px;  
+}
+
+index.html
+----------
+<!doctype html>
+<html>
+  <head>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <script src="js/vendors/angular.min.js"></script>
+    <script src="js/vendors/angular-route.min.js"></script>
+    
+  </head>
+  <body ng-app="OutboxApp">
+    <div class="header">
+      <div class="container">
+        <img src="img/logo.svg" width="140" height="150">
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="container">
+        <div ng-view></div> 
+      </div>
+    </div>
+
+    <!-- Modules -->
+    <script src="js/app.js"></script>
+
+    <!-- Controllers -->
+    <script src="js/controllers/controllers.js"></script>
+
+    <!-- Services -->
+    <script src="js/services/email.js"></script>
+  </body>
+</html>
+
+home.html
+---------
+<div class="email" ng-repeat="email in emails">
+  <a href="#/outbox/{{$index}}">
+    <span class="from">{{ email.from }}</span><span class="subject">{{ email.subject }}</span><span class="date">{{ email.datetime | date }}</span>
+  </a>
+</div>
+
+emails.html
+-----------
+<a class="back" href="#/outbox">Back</a>
+
+<div class="email-view">
+  <h2 class="subject">{{email.subject}}</h2>
+  <span class="from">{{email.from}}  </span><span classl="date">{{email.datetime | date}}</span>
+  <p class="message">{{email.message}}</p>
+</div>
+
+app.js
+------
+var app = angular.module('OutboxApp', ['ngRoute'])
+.config(function($routeProvider){
+	$routeProvider .when('/outbox', 
+		{
+			controller: "HomeController", 
+			templateUrl: "views/home.html"
+		}).when('/outbox/:id', 
+		{
+			controller: 'EmailController', 
+			templateUrl: 'views/email.html'
+		}) 
+		.otherwise({redirectTo: '/outbox'});
+});
+
+emails
+------
+app.factory('emails', function(){
+	return{
+		getData: function(){
+			return [
+			  {
+			    "from": "Shawn Carter",
+			    "datetime": 1420816800000,
+			    "subject": "Current state of mind",
+			    "message": "Yeah I'm out that Brooklyn, now I'm down in Tribeca. Want to check out that new bistro?",
+			    "unread": true
+			  },
+			
+			   {
+			    "from": "Jason Cornwell",
+			    "datetime": 1420809000000,
+			    "subject": "Please return my stapler",
+			    "message": "Hey my stapler is missing again. Please return it.",
+			    "unread": true
+			  }
+			];
+		}
+	};
+});
+
+controllers.
+-----------
+app.controller('EmailController', ['$scope', 'emails', '$routeParams', function($scope, emails, $routeParams) {
+    $scope.email = emails.getData()[$routeParams.id];
+}]);
+app.controller('HomeController', ['$scope', 'emails', function($scope, emails) {
+    $scope.emails = emails.getData();
+}]);
+
+
+logo.svg
+---------
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 140 150" enable-background="new 0 0 140 150" xml:space="preserve">
+<polygon points="69.6,150 19.6,100 19.6,50 69.6,100 "/>
+<polygon points="119.6,100 69.6,150 69.6,100 119.6,50 "/>
+<polygon fill="#F7A500" points="69.6,0 119.6,50 119.6,100 69.6,50 "/>
+<polygon fill="#FFBD1A" points="19.6,50 69.6,0 69.6,50 19.6,100 "/>
+<g>
+	<path fill="#FFFFFF" d="M15.1,123.7c-1.7,1.7-3.8,2.5-6.3,2.5s-4.6-0.8-6.3-2.5C0.8,122,0,120,0,117.5c0-2.5,0.8-4.5,2.5-6.2
+		c1.7-1.7,3.8-2.5,6.3-2.5s4.6,0.8,6.3,2.5c1.7,1.7,2.5,3.7,2.5,6.2C17.6,120,16.8,122,15.1,123.7z M13,113.2
+		c-1.1-1.2-2.5-1.8-4.2-1.8c-1.7,0-3.1,0.6-4.2,1.8c-1.1,1.2-1.7,2.6-1.7,4.3s0.6,3.1,1.7,4.3c1.1,1.2,2.5,1.8,4.2,1.8
+		c1.7,0,3.1-0.6,4.2-1.8c1.1-1.2,1.7-2.6,1.7-4.3S14.2,114.4,13,113.2z"/>
+	<path fill="#FFFFFF" d="M32.2,122.2c0.8,0.9,1.8,1.3,3.1,1.3s2.3-0.4,3.1-1.3c0.8-0.9,1.2-2.1,1.2-3.6v-9.3h2.8v9.4
+		c0,2.4-0.7,4.3-2,5.6c-1.3,1.3-3,2-5.1,2c-2.1,0-3.8-0.7-5.1-2c-1.3-1.3-2-3.2-2-5.6v-9.4H31v9.3C31,120,31.4,121.3,32.2,122.2z"/>
+	<path fill="#FFFFFF" d="M60.3,111.8V126h-2.8v-14.2h-5.1v-2.6h13v2.6H60.3z"/>
+	<path fill="#FFFFFF" d="M83,126h-7.3v-16.8h6.5c1.1,0,2.1,0.1,2.9,0.4c0.8,0.3,1.4,0.6,1.8,1.1c0.8,0.9,1.2,1.8,1.2,2.9
+		c0,1.3-0.4,2.3-1.2,2.9c-0.3,0.2-0.5,0.4-0.6,0.4c-0.1,0.1-0.3,0.1-0.6,0.3c1,0.2,1.9,0.7,2.5,1.4c0.6,0.7,0.9,1.6,0.9,2.6
+		c0,1.2-0.4,2.2-1.2,3.1C86.9,125.5,85.3,126,83,126z M78.5,116.2h3.6c2,0,3.1-0.7,3.1-2.1c0-0.8-0.2-1.4-0.7-1.7
+		c-0.5-0.4-1.3-0.5-2.3-0.5h-3.6V116.2z M78.5,123.4H83c1,0,1.8-0.2,2.4-0.5c0.6-0.3,0.8-0.9,0.8-1.9c0-1.5-1.2-2.2-3.6-2.2h-4.1
+		V123.4z"/>
+	<path fill="#FFFFFF" d="M113.8,123.7c-1.7,1.7-3.8,2.5-6.3,2.5s-4.6-0.8-6.3-2.5c-1.7-1.7-2.5-3.7-2.5-6.2c0-2.5,0.8-4.5,2.5-6.2
+		c1.7-1.7,3.8-2.5,6.3-2.5s4.6,0.8,6.3,2.5c1.7,1.7,2.5,3.7,2.5,6.2C116.4,120,115.5,122,113.8,123.7z M111.8,113.2
+		c-1.1-1.2-2.5-1.8-4.2-1.8c-1.7,0-3.1,0.6-4.2,1.8c-1.1,1.2-1.7,2.6-1.7,4.3s0.6,3.1,1.7,4.3c1.1,1.2,2.5,1.8,4.2,1.8
+		c1.7,0,3.1-0.6,4.2-1.8c1.1-1.2,1.7-2.6,1.7-4.3S112.9,114.4,111.8,113.2z"/>
+	<path fill="#FFFFFF" d="M136.5,126l-4.1-6.3h-0.1l-4.1,6.3h-3.5l5.8-8.6l-5.3-8.2h3.5l3.7,5.7h0.1l3.7-5.7h3.5l-5.3,8.2l5.8,8.6
+		H136.5z"/>
+</g>
+</svg>
+
