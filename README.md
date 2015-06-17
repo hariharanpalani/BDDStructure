@@ -11,3 +11,8 @@ http://rehansaeed.co.uk/reactive-extensions-part1-replacing-events/
 https://www.udacity.com/course/real-time-analytics-with-apache-storm--ud381
 
 http://hortonworks.com/hadoop-tutorial/hello-world-an-introduction-to-hadoop-hcatalog-hive-and-pig/
+
+https://training.mapr.com/?q=learning/catalog-search
+
+https://www.edx.org/course
+
