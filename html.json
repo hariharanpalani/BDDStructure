@@ -1,0 +1,7 @@
+{
+	"bs3-dropdown": {
+		"prefix": "bs3-dropdown",
+		"body": "\n<div class=\"dropdown\">\n\t<button class=\"btn btn-default dropdown-toggle\" type=\"button\">${1:Dropdown}<span class=\"caret\"></span></button>\n\t<ul class=\"dropdown-menu\">\n\t\t\t<li><a href=\"#\">${2:Action}</a></li>\n\t\t\t<li><a href=\"#\">${3:action}</a></li>\n\t</ul>\n</div>\n",
+		"description": "Panel (Primary)"
+	}
+}
