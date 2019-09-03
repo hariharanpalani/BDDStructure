@@ -1,0 +1,49 @@
+/*select cr.req_reference_id as "request_id", CR.buyer_id, ca.fullname as "buyer_name",
+crb.seller_id, ca1.fullname as "seller_name",
+amount, cc.name as "currency_name", cc.symbol as "currency_symbol", cp.name as "product_name",
+crs.name as "request_status", cr.created_on as "request_started_on", cr.updated_on as "request_completed_on",
+ct.buyer_tx_response -> 'tagpay' ->> 'sell_transactionid' as "transaction_id", cts1.name as "transaction_status"
+from cb_Requests CR 
+inner join cb_Agents ca on ca.agent_id = cr.buyer_id
+inner join cb_products cp on cr.product_id = cp.code
+inner join cb_currency cc on cc.code = cr.currency_code
+inner join cb_request_status crs on crs.code = cr.status_id  
+left outer join cb_transactions ct on ct.request_id = cr.request_id
+left outer join cb_transaction_status cts1 on cts1.code = ct.buyer_tx_status_code
+left outer join cb_transaction_status cts2 on cts2.code = ct.seller_tx_status_code
+left outer join cb_request_broadcast crb on crb.request_id = cr.request_id and crb.seller_status_id=103 and crb.buyer_status_id=103
+left outer join cb_Agents ca1 on ca1.agent_id = crb.seller_id*/
+--select * from cb_request_broadcast order by request_id
+
+--select * from cb_transactions
+
+select cr.req_reference_id as "request_id",  crb.seller_id, ca.fullname as "seller_name", cr.created_on as "seller_notified_on", 
+crs1.name as "seller_status", 
+crb.seller_accepted_on, 
+COALESCE(crs2.name, 
+(case  when cr.status_id = 101 then 'Pending' 
+	   when cr.status_id = 105 then 'Cancelled'  
+	   else 'Rejected' end)) as "buyer_status",
+crb.buyer_accepted_on, al.latitude as "seller_latitude", al.longitude as "seller_longitude"
+from cb_request_broadcast crb
+inner join cb_Requests cr on crb.request_id = cr.request_id
+inner join cb_Agents ca on ca.agent_id = crb.seller_id
+inner join cb_Agentlocation al on al.agent_id = ca.agent_id
+inner join cb_request_status crs1 on crs1.code = crb.seller_status_id
+left outer join cb_request_status crs2 on crs2.code = crb.buyer_status_id
+ order by request_id
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
